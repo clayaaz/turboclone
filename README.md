@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TurboAI Local
 
-## Getting Started
+A local, Turbo AI–inspired study tool. Upload PDFs, DOCX, text, YouTube links, or paste your notes, then generate **notes**, **flashcards**, and **quizzes** with a local LLM via Ollama. Chat with your material on the side.
 
-First, run the development server:
+## Requirements
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+ (LTS recommended)
+- npm
+- Ollama (local LLM server)
+
+## Quick start
+
+### Windows
+
+```bat
+start.bat
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### macOS / Linux
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+./start.sh
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The script will:
 
-## Learn More
+1. Check for Node.js and Ollama; install if missing.
+2. Install npm dependencies if missing.
+3. Pull the `llama3.1:8b` model if missing.
+4. Start the Ollama server in the background.
+5. Start the Next.js dev server.
+6. Stop Ollama when the script exits.
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Manual setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+ollama pull llama3.1:8b
+ollama serve &
+npm run dev
+```
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Upload PDF/DOCX/TXT/MD files
+- YouTube transcript ingestion
+- Generate structured notes
+- Flashcards deck with answer reveal, prev/next, and card jump menu
+- Quiz deck with answer reveal, prev/next, and card jump menu
+- Chat with your uploaded material
+- Local SQLite storage in `data/turboai.db`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Configuration
+
+- Model: set `OLLAMA_MODEL` env var (default: `llama3.1:8b`)
+- Ollama host: set `OLLAMA_HOST` env var (default: `http://localhost:11434`)
+
+## Project structure
+
+- `src/app` — Next.js App Router pages
+- `src/app/api` — API routes for materials, generation, chat
+- `src/components` — UI components (ChatPanel, StudyDeck, GenerationPanel, MaterialShell)
+- `src/lib` — DB, LLM, ingestion helpers
+- `data/` — SQLite database and uploads (created at runtime)
+
+## Notes
+
+- Generated content can contain errors; always verify against your source material.
+- The app is a UI/UX inspiration only, not affiliated with turbo.ai.
+
+## License
+
+MIT
